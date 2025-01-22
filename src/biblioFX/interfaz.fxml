@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.media.MediaView?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="biblioFX.MediaController">
+
+    <!-- Barra de menú -->
+    <top>
+        <VBox>
+            <MenuBar>
+                <Menu text="Archivo">
+                    <MenuItem text="Abrir Archivo" onAction="#openFile" />
+                </Menu>
+                <Menu text="Biblioteca">
+                    <!-- Opciones de Biblioteca -->
+                </Menu>
+                <Menu text="Ver">
+                    <!-- Opciones de visualización -->
+                </Menu>
+                <Menu text="Acerca">
+                    <!-- Información del autor y app -->
+                </Menu>
+            </MenuBar>
+            
+            <!-- Contenedor centrado para el título -->
+            <HBox alignment="CENTER">
+                <Label fx:id="titleLabel" text="Título del archivo" styleClass="title-label" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Panel lateral izquierdo - Editor de video -->
+    <left>
+        <VBox fx:id="videoEditorPanel" prefWidth="150">
+            <Button text="Cambiar tamaño" onAction="#handleResize" />
+            <Button text="Cambiar velocidad" onAction="#handleSpeedChange" />
+        </VBox>
+    </left>
+
+    <!-- Panel central - Reproductor de video -->
+    <center>
+        <StackPane>
+            <MediaView fx:id="mediaView" />
+        </StackPane>
+    </center>
+
+    <!-- Panel lateral derecho - Biblioteca -->
+    <right>
+        <VBox fx:id="libraryPanel" prefWidth="150">
+            <Label text="Biblioteca" />
+            <ListView fx:id="fileListView" onMouseClicked="#handleFileSelection" />
+        </VBox>
+    </right>
+
+    <!-- Panel inferior - Controles de reproducción -->
+    <bottom>
+        <VBox alignment="CENTER">
+            <!-- Barra de progreso -->
+            <Slider fx:id="progressSlider" maxWidth="500" />
+            
+            <!-- Controles de reproducción -->
+            <HBox alignment="CENTER" spacing="10">
+                <Button text="⏸" onAction="#handlePause" />
+                <Button text="▶" onAction="#handlePlay" />
+                <Button text="⏹" onAction="#handleStop" />
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>
