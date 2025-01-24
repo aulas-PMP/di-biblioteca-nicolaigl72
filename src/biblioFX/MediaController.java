@@ -1,15 +1,13 @@
 package biblioFX;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +34,8 @@ public class MediaController {
         this.primaryStage = stage;
     }
 
+    // Métodos existentes...
+
     @FXML
     public void handlePlay() {
         if (mediaPlayer != null) {
@@ -60,16 +60,15 @@ public class MediaController {
 
     @FXML
     public void handleResize() {
-        // Lógica para cambiar tamaño manteniendo el ratio
         if (mediaView != null && mediaView.getMediaPlayer() != null) {
-            mediaView.setFitWidth(400); // Ejemplo de ajuste manual
+            mediaView.setFitWidth(400);
         }
     }
 
     @FXML
     public void handleSpeedChange() {
         if (mediaPlayer != null) {
-            mediaPlayer.setRate(1.5); // Cambiar velocidad de reproducción
+            mediaPlayer.setRate(1.5);
         }
     }
 
@@ -99,7 +98,6 @@ public class MediaController {
             mediaView.setMediaPlayer(mediaPlayer);
             titleLabel.setText(selectedFile.getName());
 
-            // Sincronizar barra de progreso
             mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
                 progressSlider.setValue(newTime.toSeconds());
             });
@@ -108,7 +106,6 @@ public class MediaController {
                 progressSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
             });
 
-            // Actualizar tiempo desde el slider
             progressSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
                 if (progressSlider.isValueChanging()) {
                     mediaPlayer.seek(javafx.util.Duration.seconds(newValue.doubleValue()));
@@ -117,4 +114,35 @@ public class MediaController {
         }
     }
 
+    // Nueva funcionalidad para "Biblioteca"
+    @FXML
+    public void clearLibrary() {
+        mediaFiles.clear();
+        fileListView.getItems().clear();
+        titleLabel.setText("Título del archivo");
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+            mediaPlayer = null;
+        }
+    }
+
+    // Nueva funcionalidad para "Ver"
+    @FXML
+    public void toggleFullScreen() {
+        if (primaryStage != null) {
+            primaryStage.setFullScreen(!primaryStage.isFullScreen());
+        }
+    }
+
+    // Nueva funcionalidad para "Acerca"
+    @FXML
+    public void showAbout() {
+    Alert alert = new Alert(AlertType.INFORMATION);
+    alert.setTitle("Acerca de la aplicación");
+    alert.setHeaderText("Reproductor Multimedia FX");
+    alert.setContentText("Desarrollado por Nico.\nVersión: 1.0\n\nEste reproductor permite gestionar y reproducir archivos multimedia.");
+    alert.showAndWait();
+    }
 }
+

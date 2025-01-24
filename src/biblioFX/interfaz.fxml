@@ -16,13 +16,13 @@
                     <MenuItem text="Abrir Archivo" onAction="#openFile" />
                 </Menu>
                 <Menu text="Biblioteca">
-                    <!-- Opciones de Biblioteca -->
+                    <MenuItem text="Vaciar Biblioteca" onAction="#clearLibrary" />
                 </Menu>
                 <Menu text="Ver">
-                    <!-- Opciones de visualización -->
+                    <MenuItem text="Pantalla Completa" onAction="#toggleFullScreen" />
                 </Menu>
                 <Menu text="Acerca">
-                    <!-- Información del autor y app -->
+                    <MenuItem text="Información" onAction="#showAbout" />
                 </Menu>
             </MenuBar>
             
@@ -35,7 +35,7 @@
 
     <!-- Panel lateral izquierdo - Editor de video -->
     <left>
-        <VBox fx:id="videoEditorPanel" prefWidth="150">
+        <VBox fx:id="videoEditorPanel" prefWidth="250">
             <Button text="Cambiar tamaño" onAction="#handleResize" />
             <Button text="Cambiar velocidad" onAction="#handleSpeedChange" />
         </VBox>
@@ -50,7 +50,7 @@
 
     <!-- Panel lateral derecho - Biblioteca -->
     <right>
-        <VBox fx:id="libraryPanel" prefWidth="150">
+        <VBox fx:id="libraryPanel" prefWidth="200">
             <Label text="Biblioteca" />
             <ListView fx:id="fileListView" onMouseClicked="#handleFileSelection" />
         </VBox>

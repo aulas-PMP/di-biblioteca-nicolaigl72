@@ -1,41 +1,116 @@
+/* Paleta de colores para estilo Spotify
+   - Fondo principal: #121212
+   - Texto principal: #FFFFFF
+   - Texto secundario: #B3B3B3
+   - Verde principal: #1DB954
+   - Verde resaltado: #1ED760
+*/
+
+/* Fondo y texto global */
+.root {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-background-color: #121212;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Título del archivo */
 .title-label {
     -fx-font-size: 16px;
-    font-size: 16px;
     -fx-font-weight: bold;
-    font-weight: bold;
+    -fx-text-fill: #FFFFFF;
 }
 
+/* Paneles de fondo */
 #videoEditorPanel, #libraryPanel {
-    -fx-background-color: #f0f0f0;
-    background-color: #f0f0f0;
+    -fx-background-color: #181818;
     -fx-padding: 10;
-    padding: 10;
+    -fx-border-color: #282828;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
 }
 
+/* Lista de archivos */
+ListView {
+    -fx-background-color: #121212;
+    -fx-border-color: #282828;
+    -fx-text-fill: #B3B3B3;
+    -fx-control-inner-background: #121212;
+}
+
+ListView .list-cell {
+    -fx-text-fill: #B3B3B3;
+}
+
+ListView .list-cell:selected {
+    -fx-background-color: #282828;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Botones */
 Button {
-    -fx-background-color: #4CAF50;
-    background-color: #4CAF50;
-    -fx-text-fill: white;
-    -fx-padding: 10 20;
-    padding: 10 20;
-    -fx-border-radius: 5;
-    border-radius: 5;
-    -fx-background-radius: 5;
+    -fx-background-color: #1DB954;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+    -fx-border-color: transparent;
 }
 
 Button:hover {
-    -fx-background-color: #45a049;
-    background-color: #45a049;
+    -fx-background-color: #1ED760;
 }
 
-HBox {
+Button:pressed {
+    -fx-background-color: #1AA34A;
+}
+
+/* Menú */
+MenuBar {
+    -fx-background-color: #121212;
+}
+
+Menu {
+    -fx-text-fill: #FFFFFF; /* Texto blanco */
+}
+
+Menu:hover {
+    -fx-text-fill: #FFFFFF; /* Aseguramos que siga blanco en hover */
+}
+
+MenuItem {
+    -fx-text-fill: #FFFFFF; /* Texto de las opciones en blanco */
+}
+
+MenuItem:hover {
+    -fx-background-color: #1DB954;
+    -fx-text-fill: #FFFFFF; /* Texto blanco con fondo verde en hover */
+}
+
+MenuBar .menu {
+    -fx-text-fill: #FFFFFF; /* Estilo específico para el texto del menú */
+}
+
+MenuBar .menu:hover {
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Slider */
+Slider {
     -fx-padding: 10;
-    padding: 10;
 }
 
-ListView {
-    -fx-background-color: #ffffff;
-    background-color: #ffffff;
+.progress-bar {
+    -fx-accent: #1DB954;
 }
 
-
+/* Fondo del reproductor */
+StackPane {
+    -fx-background-color: #000000;
+    -fx-border-color: #282828;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
