@@ -3,6 +3,8 @@ package biblioFX;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -18,6 +20,10 @@ public class MediaController {
     private MediaView mediaView;
     private MediaPlayer mediaPlayer;
 
+    private double originalWidth;
+    private double originalHeight;
+    private boolean isMinimized = false; // Indica si el MediaView está minimizado
+
     @FXML
     private Label titleLabel;
 
@@ -29,6 +35,12 @@ public class MediaController {
 
     private List<File> mediaFiles = new ArrayList<>();
     private Stage primaryStage;
+
+    @FXML
+    private ImageView imageView; // Nueva referencia al ImageView para mostrar la imagen
+
+    private static final String AUDIO_PLACEHOLDER_PATH = "file:resources/audio.png"; // Cambia la ruta si es
+                                                                                     // necesario
 
     public void setStage(Stage stage) {
         this.primaryStage = stage;
@@ -61,7 +73,17 @@ public class MediaController {
     @FXML
     public void handleResize() {
         if (mediaView != null && mediaView.getMediaPlayer() != null) {
-            mediaView.setFitWidth(400);
+            if (isMinimized) {
+                // Restaurar al tamaño original del video
+                mediaView.setFitWidth(originalWidth);
+                mediaView.setFitHeight(originalHeight);
+                isMinimized = false;
+            } else {
+                // Minimizar el tamaño
+                mediaView.setFitWidth(400);
+                mediaView.setFitHeight(300);
+                isMinimized = true;
+            }
         }
     }
 
@@ -90,12 +112,32 @@ public class MediaController {
         int selectedIndex = fileListView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             File selectedFile = mediaFiles.get(selectedIndex);
-            Media media = new Media(selectedFile.toURI().toString());
+
+            boolean isAudio = selectedFile.getName().endsWith(".mp3");
+
             if (mediaPlayer != null) {
                 mediaPlayer.dispose();
             }
+
+            Media media = new Media(selectedFile.toURI().toString());
             mediaPlayer = new MediaPlayer(media);
-            mediaView.setMediaPlayer(mediaPlayer);
+
+            if (isAudio) {
+                imageView.setImage(new Image(AUDIO_PLACEHOLDER_PATH));
+                imageView.setVisible(true);
+                mediaView.setVisible(false);
+            } else {
+                mediaView.setMediaPlayer(mediaPlayer);
+                mediaView.setVisible(true);
+                imageView.setVisible(false);
+
+                // Capturar el tamaño original del video al cargarlo
+                mediaPlayer.setOnReady(() -> {
+                    originalWidth = mediaView.getFitWidth();
+                    originalHeight = mediaView.getFitHeight();
+                });
+            }
+
             titleLabel.setText(selectedFile.getName());
 
             mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
@@ -111,6 +153,8 @@ public class MediaController {
                     mediaPlayer.seek(javafx.util.Duration.seconds(newValue.doubleValue()));
                 }
             });
+
+            mediaPlayer.play();
         }
     }
 
@@ -138,11 +182,11 @@ public class MediaController {
     // Nueva funcionalidad para "Acerca"
     @FXML
     public void showAbout() {
-    Alert alert = new Alert(AlertType.INFORMATION);
-    alert.setTitle("Acerca de la aplicación");
-    alert.setHeaderText("Reproductor Multimedia FX");
-    alert.setContentText("Desarrollado por Nico.\nVersión: 1.0\n\nEste reproductor permite gestionar y reproducir archivos multimedia.");
-    alert.showAndWait();
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Acerca de la aplicación");
+        alert.setHeaderText("Reproductor Multimedia FX");
+        alert.setContentText(
+                "Desarrollado por Nico.\nVersión: 1.0\n\nEste reproductor permite gestionar y reproducir archivos multimedia.");
+        alert.showAndWait();
     }
 }
-

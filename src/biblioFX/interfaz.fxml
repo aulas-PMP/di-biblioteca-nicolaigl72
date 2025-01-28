@@ -3,6 +3,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.media.MediaView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -36,17 +39,22 @@
     <!-- Panel lateral izquierdo - Editor de video -->
     <left>
         <VBox fx:id="videoEditorPanel" prefWidth="250">
-            <Button text="Cambiar tamaño" onAction="#handleResize" />
-            <Button text="Cambiar velocidad" onAction="#handleSpeedChange" />
+             <Button text="Cambiar tamaño" onAction="#handleResize" prefWidth="200" />
+             <Button text="Cambiar velocidad x2" onAction="#handleSpeedChange" prefWidth="200"/>
         </VBox>
     </left>
 
     <!-- Panel central - Reproductor de video -->
     <center>
         <StackPane>
+            <!-- Vista para archivos de video -->
             <MediaView fx:id="mediaView" />
+
+            <!-- Imagen para archivos de audio -->
+            <ImageView fx:id="imageView" fitWidth="400" fitHeight="300" preserveRatio="true" visible="false" />
         </StackPane>
     </center>
+
 
     <!-- Panel lateral derecho - Biblioteca -->
     <right>
