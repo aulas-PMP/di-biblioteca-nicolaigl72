@@ -4,14 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="biblioFX.MediaController">
 
-    <!-- Barra de menú -->
     <top>
         <VBox>
             <MenuBar>
@@ -28,49 +25,46 @@
                     <MenuItem text="Información" onAction="#showAbout" />
                 </Menu>
             </MenuBar>
-            
-            <!-- Contenedor centrado para el título -->
-            <HBox alignment="CENTER">
-                <Label fx:id="titleLabel" text="Título del archivo" styleClass="title-label" />
-            </HBox>
         </VBox>
     </top>
 
-    <!-- Panel lateral izquierdo - Editor de video -->
+    <!-- Panel lateral izquierdo con su botón -->
     <left>
-        <VBox fx:id="videoEditorPanel" prefWidth="250">
-             <Button text="Cambiar tamaño" onAction="#handleResize" prefWidth="200" />
-             <Button text="Cambiar velocidad x2" onAction="#handleSpeedChange" prefWidth="200"/>
-        </VBox>
+        <HBox fx:id="leftPanelContainer">
+            <VBox fx:id="videoEditorPanel" prefWidth="250" spacing="10"> 
+                <Button text="Cambiar tamaño" onAction="#handleResize" prefWidth="200" />
+                <Button text="Cambiar velocidad x2" onAction="#handleSpeedChange" prefWidth="200"/>
+                <Button text="Cambiar velocidad x1" onAction="#handleSpeedChange2" prefWidth="200"/>
+            </VBox>
+            <Button fx:id="toggleLeftPanelButton" text="⏴" onAction="#toggleLeftPanel"/>
+        </HBox>
     </left>
 
     <!-- Panel central - Reproductor de video -->
     <center>
         <StackPane>
-            <!-- Vista para archivos de video -->
+        <Label fx:id="fileNameLabel" text="No hay archivo seleccionado" 
+               style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 5px;"
+               StackPane.alignment="TOP_CENTER"/>
             <MediaView fx:id="mediaView" />
-
-            <!-- Imagen para archivos de audio -->
             <ImageView fx:id="imageView" fitWidth="400" fitHeight="300" preserveRatio="true" visible="false" />
         </StackPane>
     </center>
 
-
-    <!-- Panel lateral derecho - Biblioteca -->
+    <!-- Panel lateral derecho con su botón -->
     <right>
-        <VBox fx:id="libraryPanel" prefWidth="200">
-            <Label text="Biblioteca" />
-            <ListView fx:id="fileListView" onMouseClicked="#handleFileSelection" />
-        </VBox>
+        <HBox fx:id="rightPanelContainer">
+            <Button fx:id="toggleRightPanelButton" text="⏵" onAction="#toggleRightPanel"/>
+            <VBox fx:id="libraryPanel" prefWidth="200">
+                <Label text="Biblioteca" />
+                <ListView fx:id="fileListView" onMouseClicked="#handleFileSelection" />
+            </VBox>
+        </HBox>
     </right>
 
-    <!-- Panel inferior - Controles de reproducción -->
     <bottom>
         <VBox alignment="CENTER">
-            <!-- Barra de progreso -->
             <Slider fx:id="progressSlider" maxWidth="500" />
-            
-            <!-- Controles de reproducción -->
             <HBox alignment="CENTER" spacing="10">
                 <Button text="⏸" onAction="#handlePause" />
                 <Button text="▶" onAction="#handlePlay" />

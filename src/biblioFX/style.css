@@ -72,29 +72,25 @@ MenuBar {
     -fx-background-color: #121212;
 }
 
-Menu {
-    -fx-text-fill: #FFFFFF; /* Texto blanco */
-}
-
-Menu:hover {
-    -fx-text-fill: #FFFFFF; /* Aseguramos que siga blanco en hover */
-}
-
-MenuItem {
-    -fx-text-fill: #FFFFFF; /* Texto de las opciones en blanco */
-}
-
-MenuItem:hover {
-    -fx-background-color: #1DB954;
-    -fx-text-fill: #FFFFFF; /* Texto blanco con fondo verde en hover */
-}
-
 MenuBar .menu {
-    -fx-text-fill: #FFFFFF; /* Estilo específico para el texto del menú */
+    -fx-text-fill: #FFFFFF; /* Texto blanco para los menús */
 }
 
 MenuBar .menu:hover {
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #FFFFFF; /* Asegura que el texto siga siendo blanco en hover */
+}
+
+MenuBar .menu:showing {
+    -fx-text-fill: #FFFFFF; /* Asegura que el texto siga siendo blanco cuando el menú está abierto */
+}
+
+MenuItem {
+    -fx-text-fill: #FFFFFF; /* Texto blanco para los ítems del menú */
+}
+
+MenuItem:hover {
+    -fx-background-color: #1DB954; /* Fondo verde en hover */
+    -fx-text-fill: #FFFFFF; /* Texto blanco en hover */
 }
 
 /* Slider */
@@ -114,3 +110,8 @@ StackPane {
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
 }
+
+.button {
+    -fx-margin: 5px 0; 
+}
+

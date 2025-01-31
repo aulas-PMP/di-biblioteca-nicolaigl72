@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -18,8 +19,10 @@ public class MediaController {
 
     @FXML
     private MediaView mediaView;
+    @FXML
     private MediaPlayer mediaPlayer;
-
+    @FXML
+    private Label fileNameLabel;
     private double originalWidth;
     private double originalHeight;
     private boolean isMinimized = false; // Indica si el MediaView está minimizado
@@ -39,7 +42,7 @@ public class MediaController {
     @FXML
     private ImageView imageView; // Nueva referencia al ImageView para mostrar la imagen
 
-    private static final String AUDIO_PLACEHOLDER_PATH = "file:resources/audio.png"; // Cambia la ruta si es
+    private static final String AUDIO_PLACEHOLDER_PATH = "file:resources/audio2.png"; // Cambia la ruta si es
                                                                                      // necesario
 
     public void setStage(Stage stage) {
@@ -68,6 +71,9 @@ public class MediaController {
             mediaPlayer.stop();
             progressSlider.setValue(0); // Reiniciar la barra de progreso
         }
+
+        fileNameLabel.setText("No hay archivo seleccionado");
+
     }
 
     @FXML
@@ -91,6 +97,13 @@ public class MediaController {
     public void handleSpeedChange() {
         if (mediaPlayer != null) {
             mediaPlayer.setRate(1.5);
+        }
+    }
+
+    @FXML
+    public void handleSpeedChange2() {
+        if (mediaPlayer != null) {
+            mediaPlayer.setRate(1);
         }
     }
 
@@ -130,28 +143,24 @@ public class MediaController {
                 mediaView.setMediaPlayer(mediaPlayer);
                 mediaView.setVisible(true);
                 imageView.setVisible(false);
-
-                // Capturar el tamaño original del video al cargarlo
-                mediaPlayer.setOnReady(() -> {
-                    originalWidth = mediaView.getFitWidth();
-                    originalHeight = mediaView.getFitHeight();
-                });
             }
 
-            titleLabel.setText(selectedFile.getName());
+            fileNameLabel.setText(selectedFile.getName());
 
             mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
-                progressSlider.setValue(newTime.toSeconds());
+                if (!progressSlider.isValueChanging()) {
+                    progressSlider.setValue(newTime.toSeconds());
+                }
+            });
+
+            progressSlider.setOnMouseReleased(event -> {
+                if (mediaPlayer != null) {
+                    mediaPlayer.seek(javafx.util.Duration.seconds(progressSlider.getValue()));
+                }
             });
 
             mediaPlayer.setOnReady(() -> {
                 progressSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
-            });
-
-            progressSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
-                if (progressSlider.isValueChanging()) {
-                    mediaPlayer.seek(javafx.util.Duration.seconds(newValue.doubleValue()));
-                }
             });
 
             mediaPlayer.play();
@@ -189,4 +198,36 @@ public class MediaController {
                 "Desarrollado por Nico.\nVersión: 1.0\n\nEste reproductor permite gestionar y reproducir archivos multimedia.");
         alert.showAndWait();
     }
+
+    @FXML
+    private VBox videoEditorPanel; 
+
+    @FXML
+    private VBox libraryPanel; 
+
+    @FXML
+    private Button toggleLeftPanelButton; 
+
+    @FXML
+    private Button toggleRightPanelButton; 
+
+    private boolean isLeftPanelVisible = true;
+    private boolean isRightPanelVisible = true;
+
+    @FXML
+    public void toggleLeftPanel() {
+        isLeftPanelVisible = !isLeftPanelVisible;
+        videoEditorPanel.setVisible(isLeftPanelVisible);
+        videoEditorPanel.setManaged(isLeftPanelVisible);
+        toggleLeftPanelButton.setText(isLeftPanelVisible ? "⏴" : "⏵");
+    }
+
+    @FXML
+    public void toggleRightPanel() {
+        isRightPanelVisible = !isRightPanelVisible;
+        libraryPanel.setVisible(isRightPanelVisible);
+        libraryPanel.setManaged(isRightPanelVisible);
+        toggleRightPanelButton.setText(isRightPanelVisible ? "⏵" : "⏴");
+    }
+
 }
