@@ -1,10 +1,12 @@
 package biblioFX;
 
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -14,6 +16,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.stage.Popup;
+import javafx.util.Duration;
 
 public class MediaController {
 
@@ -27,6 +32,9 @@ public class MediaController {
     private double originalHeight;
     private boolean isMinimized = false; // Indica si el MediaView está minimizado
 
+    @FXML
+    private Button speedToggleButton; // Referencia al botón de cambio de velocidad
+    private boolean isFastSpeed = false; // Estado de velocidad actual
     @FXML
     private Label titleLabel;
 
@@ -43,7 +51,7 @@ public class MediaController {
     private ImageView imageView; // Nueva referencia al ImageView para mostrar la imagen
 
     private static final String AUDIO_PLACEHOLDER_PATH = "file:resources/audio2.png"; // Cambia la ruta si es
-                                                                                     // necesario
+                                                                                      // necesario
 
     public void setStage(Stage stage) {
         this.primaryStage = stage;
@@ -93,19 +101,7 @@ public class MediaController {
         }
     }
 
-    @FXML
-    public void handleSpeedChange() {
-        if (mediaPlayer != null) {
-            mediaPlayer.setRate(1.5);
-        }
-    }
-
-    @FXML
-    public void handleSpeedChange2() {
-        if (mediaPlayer != null) {
-            mediaPlayer.setRate(1);
-        }
-    }
+   
 
     @FXML
     public void openFile() {
@@ -117,7 +113,38 @@ public class MediaController {
         if (file != null) {
             mediaFiles.add(file);
             fileListView.getItems().add(file.getName());
+
+            // Mostrar la notificación
+            showFileOpenedNotification(file.getName());
         }
+    }
+
+    private void showFileOpenedNotification(String fileName) {
+        Popup popup = new Popup();
+        Label notificationLabel = new Label("📂 Archivo abierto: " + fileName);
+        notificationLabel.setStyle("-fx-background-color: #2c3e50; -fx-text-fill: white; -fx-padding: 10px 20px; "
+                + "-fx-font-size: 14px; -fx-border-radius: 10px; -fx-background-radius: 10px; "
+                + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);");
+
+        StackPane content = new StackPane(notificationLabel);
+        content.setStyle("-fx-background-color: transparent;");
+        popup.getContent().add(content);
+
+        // Posicionar en el centro
+        double centerX = primaryStage.getX() + primaryStage.getWidth() / 2 - 100;
+        double centerY = primaryStage.getY() + primaryStage.getHeight() / 2 - 50;
+        popup.setX(centerX);
+        popup.setY(centerY);
+
+        popup.show(primaryStage);
+
+        // Agregar animación de desvanecimiento
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(3), content);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        fadeOut.setOnFinished(event -> popup.hide());
+
+        fadeOut.play();
     }
 
     @FXML
@@ -188,7 +215,20 @@ public class MediaController {
         }
     }
 
-    // Nueva funcionalidad para "Acerca"
+    @FXML
+    public void toggleSpeed() {
+        if (mediaPlayer != null) {
+            if (isFastSpeed) {
+                mediaPlayer.setRate(1.0); // Velocidad normal
+                speedToggleButton.setText("Cambiar velocidad x2");
+            } else {
+                mediaPlayer.setRate(2.0); // Velocidad rápida
+                speedToggleButton.setText("Cambiar velocidad x1");
+            }
+            isFastSpeed = !isFastSpeed; // Alternar el estado
+        }
+    }
+
     @FXML
     public void showAbout() {
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -200,16 +240,16 @@ public class MediaController {
     }
 
     @FXML
-    private VBox videoEditorPanel; 
+    private VBox videoEditorPanel;
 
     @FXML
-    private VBox libraryPanel; 
+    private VBox libraryPanel;
 
     @FXML
-    private Button toggleLeftPanelButton; 
+    private Button toggleLeftPanelButton;
 
     @FXML
-    private Button toggleRightPanelButton; 
+    private Button toggleRightPanelButton;
 
     private boolean isLeftPanelVisible = true;
     private boolean isRightPanelVisible = true;
