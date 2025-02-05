@@ -115,3 +115,14 @@ StackPane {
     -fx-margin: 5px 0; 
 }
 
+#volumeLabel {
+    -fx-text-fill: #1DB954; /* Color verde de la app */
+    -fx-font-size: 14px; /* Tamaño de fuente */
+    -fx-font-weight: bold; /* Negrita (opcional) */
+}
+
+#biblioLabel {
+    -fx-text-fill: #FFFFFF; /* Color blanco */
+    -fx-font-size: 14px; /* Tamaño de fuente */
+    -fx-font-weight: bold; /* Negrita (opcional) */
+}

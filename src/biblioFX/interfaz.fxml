@@ -57,7 +57,7 @@
         <HBox fx:id="rightPanelContainer">
             <Button fx:id="toggleRightPanelButton" text="⏵" onAction="#toggleRightPanel"/>
             <VBox fx:id="libraryPanel" prefWidth="200">
-                <Label text="Biblioteca" />
+                <Label fx:id="biblioLabel" text="Biblioteca" />
                 <ListView fx:id="fileListView" onMouseClicked="#handleFileSelection" />
             </VBox>
         </HBox>
@@ -70,6 +70,10 @@
             <Button text="⏸" onAction="#handlePause" />
             <Button text="▶" onAction="#handlePlay" />
             <Button text="⏹" onAction="#handleStop" />
+        </HBox>
+        <HBox alignment="CENTER" spacing="10">
+            <Label fx:id="volumeLabel" text="Volumen:" />
+            <Slider fx:id="volumeSlider" min="0" max="1" value="0.5" prefWidth="150" />
         </HBox>
     </VBox>
 </bottom>
